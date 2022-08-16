@@ -19,23 +19,27 @@ namespace TestTask.Service
         public async Task<string> GetAllPersons(string? order)
         {
             var allPerson = await personRepository.GetAllAsync();
-
-            if (order != null && Regex.Matches(order, "\":").Count >= 1)
+            if (allPerson.Count() > 0)
             {
-                var dictOrder = jsonSerializerCustom.ConvertJsonToDictionary(order);
-                foreach (var pair in dictOrder)
+                if (order != null && Regex.Matches(order, "\":").Count >= 1)
                 {
-                    if (pair.Key.ToLower() == "city")
-                        allPerson = allPerson.Where(x => x.Address.City == pair.Value);
-                    else if (pair.Key.ToLower() == "firstname")
-                        allPerson = allPerson.Where(x => x.FirstName == pair.Value);
-                    else if (pair.Key.ToLower() == "lastname")
-                        allPerson = allPerson.Where(x => x.LastName == pair.Value);
+                    var dictOrder = jsonSerializerCustom.ConvertJsonToDictionary(order);
+                    foreach (var pair in dictOrder)
+                    {
+                        if (pair.Key.ToLower() == "city")
+                            allPerson = allPerson.Where(x => x.Address.City == pair.Value);
+                        else if (pair.Key.ToLower() == "firstname")
+                            allPerson = allPerson.Where(x => x.FirstName == pair.Value);
+                        else if (pair.Key.ToLower() == "lastname")
+                            allPerson = allPerson.Where(x => x.LastName == pair.Value);
+                    }
                 }
-            }
-            string result = jsonSerializerCustom.ConvertListObjectToJson(allPerson.ToList());
+                string result = jsonSerializerCustom.ConvertListObjectToJson(allPerson.ToList());
 
-            return result;
+                return result;
+
+            }
+            else return "No Person";
         }
 
         public async Task<long> SavePersonsAsync(string jsonString)

@@ -21,7 +21,7 @@ namespace TestTask.Repository
 
         public async Task<Person> GetByIdAsync(long id)
         {
-            Person person = await context.Person.FirstOrDefaultAsync(x => x.Id == id);
+            var person = await context.Person.FirstOrDefaultAsync(x => x.Id == id);
 
             return person;
         }

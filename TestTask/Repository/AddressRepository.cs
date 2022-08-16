@@ -22,7 +22,7 @@ namespace TestTask.Repository
 
         public async Task<Address> GetByIdAsync(long id)
         {
-            Address address = await context.Address.FirstOrDefaultAsync(x => x.Id == id);
+            var address = await context.Address.FirstOrDefaultAsync(x => x.Id == id);
 
             return address;
         }
@@ -35,6 +35,6 @@ namespace TestTask.Repository
         public Task SaveAsync()
         {
             return context.SaveChangesAsync();
-        }       
+        }
     }
 }
